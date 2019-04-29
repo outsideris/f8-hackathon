@@ -39,5 +39,10 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
   };
 
+  Goods.register = async function register(g) {
+    const d = await this.build(g).save();
+    return d;
+  };
+
   return Goods;
 };
