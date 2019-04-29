@@ -1,6 +1,5 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('Users', {
+  const Users = sequelize.define('Users', {
     firstName: {
       type: DataTypes.STRING,
     },
@@ -20,14 +19,20 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
   }, {
-    tableName: 'Users',
+    tableName: 'users',
     timestamps: true,
     paranoid: false,
   });
 
-  User.associate = (models) => {
+  Users.associate = (models) => {
     // associations can be defined here
   };
 
-  return User;
+  Users.signin = async function signin(u) {
+    // TODO: prevent to save duplicated user
+    const d = await this.build(u).save();
+    return d;
+  };
+
+  return Users;
 };

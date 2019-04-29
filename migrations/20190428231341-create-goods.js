@@ -8,8 +8,8 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      images: {
-        type: Sequelize.ARRAY(Sequelize.BLOB),
+      imagePaths: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
       },
       title: {
         type: Sequelize.STRING,

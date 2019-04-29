@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Subscriptions = sequelize.define('Subscriptions', {
     userId: {
