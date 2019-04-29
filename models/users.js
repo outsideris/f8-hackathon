@@ -24,14 +24,17 @@ module.exports = (sequelize, DataTypes) => {
     paranoid: false,
   });
 
-  Users.associate = (models) => {
-    // associations can be defined here
-  };
-
   Users.signin = async function signin(u) {
     // TODO: prevent to save duplicated user
     const d = await this.build(u).save();
     return d;
+  };
+
+  Users.list = async function list(g) {
+    return this.findAll({
+      order: [['id', 'DESC']],
+      include: [ { all: true }]
+    });
   };
 
   return Users;

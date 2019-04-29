@@ -15,8 +15,6 @@ mkdirp.sync('public/upload');
 const app = express();
 
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 app.use(formidableMiddleware({
   encoding: 'utf-8',
   uploadDir: `${__dirname}/public/upload`,
@@ -53,12 +51,13 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  console.error(err);
-
   res.status(err.status || 500);
-  res.json({ status: 'error' });
+  if (!err.status) {
+    console.error(err);
+    return res.json({ status: 'error' });
+  }
+
+  res.json({ status: 'error', msg: err.message });
 });
 
 module.exports = app;

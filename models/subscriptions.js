@@ -16,9 +16,5 @@ module.exports = (sequelize, DataTypes) => {
     paranoid: false,
   });
 
-  Subscriptions.associate = (models) => {
-    // associations can be defined here
-  };
-
   return Subscriptions;
 };

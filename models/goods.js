@@ -35,13 +35,32 @@ module.exports = (sequelize, DataTypes) => {
     paranoid: false,
   });
 
-  Goods.associate = (models) => {
-    // associations can be defined here
-  };
-
   Goods.register = async function register(g) {
     const d = await this.build(g).save();
     return d;
+  };
+
+  Goods.list = async function list(g) {
+    return this.findAll({
+      order: [['id', 'DESC']],
+      include: [ { all: true }]
+    });
+  };
+
+  Goods.get = async function get(id) {
+    return this.findOne({
+      where: { id },
+      include: [ { all: true }]
+    });
+  };
+
+  Goods.prototype.modify = async function modify(g) {
+    const d = await this.update(g);
+    return d;
+  };
+
+  Goods.prototype.remove = async function remove() {
+    await this.destroy();
   };
 
   return Goods;
