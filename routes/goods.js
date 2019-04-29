@@ -6,8 +6,4 @@ router.get('/', (req, res, next) => {
   res.json({ title: 'f8hackathon', version: pkg.version });
 });
 
-router.get('/search', (req, res, next) => {
-  res.json({ title: 'f8hackathon', version: pkg.version });
-});
-
 module.exports = router;
