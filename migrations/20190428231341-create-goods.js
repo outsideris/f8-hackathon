@@ -17,6 +17,30 @@ module.exports = {
       description: {
         type: Sequelize.TEXT,
       },
+      contact: {
+        type: Sequelize.TEXT,
+      },
+      likes: {
+        type: Sequelize.INTEGER,
+      },
+      category: {
+        type: Sequelize.STRING,
+      },
+      date: {
+        type: Sequelize.DATE,
+      },
+      available: {
+        type: Sequelize.BOOLEAN,
+      },
+      latitude: {
+        type: Sequelize.FLOAT,
+      },
+      longitude: {
+        type: Sequelize.FLOAT,
+      },
+      weight: {
+        type: Sequelize.FLOAT,
+      },
       price: {
         type: Sequelize.FLOAT,
       },
@@ -26,6 +50,9 @@ module.exports = {
       tags: {
         type: Sequelize.ARRAY(Sequelize.STRING),
       },
+      address: {
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -34,7 +61,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      userId: {
+      authorId: {
         type: Sequelize.INTEGER,
       },
     });

@@ -24,7 +24,7 @@ const normalizeRequest = (req) => {
 router.post('/goods', async (req, res, next) => {
   normalizeRequest(req);
 
-  // TODO: set userId from auth
+  // TODO: set authorId from auth
   const g = await Goods.register(req.fields);
   res.json(postProcess(g.toJSON()));
 });

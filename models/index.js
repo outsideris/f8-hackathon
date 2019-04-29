@@ -29,8 +29,8 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
-db.Users.hasMany(db.Goods, { as: 'goods', foreignKey: 'userId' });
-db.Goods.belongsTo(db.Users, { as: 'user', foreignKey: 'userId' });
+db.Authors.hasMany(db.Goods, { as: 'goods', foreignKey: 'authorId' });
+db.Goods.belongsTo(db.Authors, { as: 'author', foreignKey: 'authorId' });
 db.Goods.hasMany(db.Subscriptions, { as: 'subscriptions', foreignKey: 'goodId' });
 db.Subscriptions.belongsTo(db.Goods, { as: 'good', foreignKey: 'goodId' });
 

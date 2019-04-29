@@ -9,6 +9,30 @@ module.exports = (sequelize, DataTypes) => {
     description: {
       type: DataTypes.TEXT,
     },
+    contact: {
+      type: DataTypes.TEXT,
+    },
+    likes: {
+      type: DataTypes.INTEGER,
+    },
+    category: {
+      type: DataTypes.STRING,
+    },
+    date: {
+      type: DataTypes.DATE,
+    },
+    available: {
+      type: DataTypes.STRING,
+    },
+    latitude: {
+      type: DataTypes.FLOAT,
+    },
+    longitude: {
+      type: DataTypes.FLOAT,
+    },
+    weight: {
+      type: DataTypes.FLOAT,
+    },
     price: {
       type: DataTypes.FLOAT,
     },
@@ -18,6 +42,9 @@ module.exports = (sequelize, DataTypes) => {
     tags: {
       type: DataTypes.ARRAY(DataTypes.STRING),
     },
+    address: {
+      type: DataTypes.STRING,
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE,
@@ -26,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.DATE,
     },
-    userId: {
+    authorId: {
       type: DataTypes.INTEGER,
     },
   }, {

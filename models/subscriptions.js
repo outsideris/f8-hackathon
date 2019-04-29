@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Subscriptions = sequelize.define('Subscriptions', {
-    userId: {
+    authorId: {
       type: DataTypes.INTEGER,
     },
     goodId: {

@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Users = sequelize.define('Users', {
+  const Authors = sequelize.define('Authors', {
     firstName: {
       type: DataTypes.STRING,
     },
@@ -19,23 +19,23 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
   }, {
-    tableName: 'users',
+    tableName: 'authors',
     timestamps: true,
     paranoid: false,
   });
 
-  Users.signin = async function signin(u) {
+  Authors.signin = async function signin(a) {
     // TODO: prevent to save duplicated user
-    const d = await this.build(u).save();
+    const d = await this.build(a).save();
     return d;
   };
 
-  Users.list = async function list(g) {
+  Authors.list = async function list(g) {
     return this.findAll({
       order: [['id', 'DESC']],
       include: [ { all: true }]
     });
   };
 
-  return Users;
+  return Authors;
 };

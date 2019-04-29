@@ -7,7 +7,7 @@ const formidableMiddleware = require('express-formidable');
 const mkdirp = require('mkdirp');
 
 const indexRoutes = require('./routes/index');
-const usersRoutes = require('./routes/users');
+const authorsRoutes = require('./routes/authors');
 const goodsRoutes = require('./routes/goods');
 
 mkdirp.sync('public/upload');
@@ -43,7 +43,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/', indexRoutes);
-app.use('/api/v1', usersRoutes);
+app.use('/api/v1', authorsRoutes);
 app.use('/api/v1', goodsRoutes);
 
 app.use((req, res, next) => {
