@@ -14,9 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     description: {
       type: DataTypes.TEXT,
     },
-    likes: {
-      type: DataTypes.INTEGER,
-    },
     category: {
       type: DataTypes.ENUM,
       values: Category.enumValues.map(s => s.name),

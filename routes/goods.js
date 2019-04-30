@@ -2,7 +2,7 @@ const express = require('express');
 const createError = require('http-errors');
 const router = express.Router();
 
-const { Goods, Contracts } = require('../models');
+const { Goods, Contracts, Likes } = require('../models');
 const { postProcess } = require('../lib/util');
 
 const UPLOAD_PATH = 'public/upload';
@@ -83,10 +83,9 @@ router.post('/goods/:id/like', async (req, res, next) => {
     const g = await Goods.get(req.params.id);
     if (!g) { return next(createError(404, 'The good does not exist.')); }
 
-    normalizeRequest(req);
+    const c = await Likes.like(g.id);
 
-    await g.modify(req.fields);
-    res.json(postProcess(g.toJSON()));
+    res.json(postProcess(c.toJSON()));
   } catch (err) {
     return next(err);
   }

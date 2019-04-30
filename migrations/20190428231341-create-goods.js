@@ -17,9 +17,6 @@ module.exports = {
       description: {
         type: Sequelize.TEXT,
       },
-      likes: {
-        type: Sequelize.INTEGER,
-      },
       category: {
         type: Sequelize.ENUM,
         values: ['produce', 'livestock'],

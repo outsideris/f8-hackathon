@@ -33,6 +33,8 @@ db.Authors.hasMany(db.Goods, { as: 'goods', foreignKey: 'authorId' });
 db.Goods.belongsTo(db.Authors, { as: 'author', foreignKey: 'authorId' });
 db.Goods.hasMany(db.Contracts, { as: 'contracts', foreignKey: 'goodId' });
 db.Contracts.belongsTo(db.Goods, { as: 'good', foreignKey: 'goodId' });
+db.Goods.hasMany(db.Likes, { as: 'likes', foreignKey: 'goodId' });
+db.Likes.belongsTo(db.Goods, { as: 'good', foreignKey: 'goodId' });
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
