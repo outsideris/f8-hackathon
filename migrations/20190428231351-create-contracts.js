@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('subscriptions', {
+    return queryInterface.createTable('contracts', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -13,9 +13,10 @@ module.exports = {
       goodId: {
         type: Sequelize.INTEGER,
       },
-      onGoing: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: true,
+      status: {
+        type: Sequelize.ENUM,
+        values: ['paid', 'delivery', 'completed'],
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
@@ -28,6 +29,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('subscriptions');
+    return queryInterface.dropTable('contracts');
   }
 };

@@ -17,14 +17,13 @@ module.exports = {
       description: {
         type: Sequelize.TEXT,
       },
-      contact: {
-        type: Sequelize.TEXT,
-      },
       likes: {
         type: Sequelize.INTEGER,
       },
       category: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM,
+        values: ['produce', 'livestock'],
+        allowNull: false,
       },
       date: {
         type: Sequelize.DATE,

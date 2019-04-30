@@ -1,3 +1,8 @@
+const { Enum } = require('enumify');
+
+class Category extends Enum {}
+Category.initEnum(['produce', 'livestock']);
+
 module.exports = (sequelize, DataTypes) => {
   const Goods = sequelize.define('Goods', {
     imagePaths: {
@@ -9,14 +14,13 @@ module.exports = (sequelize, DataTypes) => {
     description: {
       type: DataTypes.TEXT,
     },
-    contact: {
-      type: DataTypes.TEXT,
-    },
     likes: {
       type: DataTypes.INTEGER,
     },
     category: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM,
+      values: Category.enumValues.map(s => s.name),
+      allowNull: false,
     },
     date: {
       type: DataTypes.DATE,
@@ -70,14 +74,14 @@ module.exports = (sequelize, DataTypes) => {
   Goods.list = async function list(g) {
     return this.findAll({
       order: [['id', 'DESC']],
-      include: [ { all: true }]
+      include: [ { all: true } ]
     });
   };
 
   Goods.get = async function get(id) {
     return this.findOne({
       where: { id },
-      include: [ { all: true }]
+      include: [ { all: true } ]
     });
   };
 
@@ -88,6 +92,13 @@ module.exports = (sequelize, DataTypes) => {
 
   Goods.prototype.remove = async function remove() {
     await this.destroy();
+  };
+
+  Goods.prototype.like = async function like() {
+    const d = await this.update({
+      like: this.like + 1,
+    });
+    return d;
   };
 
   return Goods;
