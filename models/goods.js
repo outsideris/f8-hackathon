@@ -1,26 +1,18 @@
 const { Enum } = require('enumify');
+const Sequelize = require('sequelize');
 
 class Category extends Enum {}
 Category.initEnum(['produce', 'livestock']);
 
 module.exports = (sequelize, DataTypes) => {
   const Goods = sequelize.define('Goods', {
-    imagePaths: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
-    },
-    title: {
-      type: DataTypes.STRING,
-    },
-    description: {
-      type: DataTypes.TEXT,
+    images: {
+      type: DataTypes.ARRAY(DataTypes.TEXT),
     },
     category: {
       type: DataTypes.ENUM,
       values: Category.enumValues.map(s => s.name),
       allowNull: false,
-    },
-    date: {
-      type: DataTypes.DATE,
     },
     available: {
       type: DataTypes.STRING,
@@ -34,17 +26,15 @@ module.exports = (sequelize, DataTypes) => {
     weight: {
       type: DataTypes.FLOAT,
     },
+    measure: {
+      type: DataTypes.STRING,
+    },
     price: {
       type: DataTypes.FLOAT,
     },
-    priceUnit: {
-      type: DataTypes.STRING,
-    },
-    tags: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
-    },
-    address: {
-      type: DataTypes.STRING,
+    date: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
     },
     createdAt: {
       allowNull: false,
@@ -63,15 +53,34 @@ module.exports = (sequelize, DataTypes) => {
     paranoid: false,
   });
 
+  Goods.Category = Category;
+
   Goods.register = async function register(g) {
     const d = await this.build(g).save();
     return d;
   };
 
-  Goods.list = async function list(g) {
+  Goods.list = async function list(category) {
     return this.findAll({
+      where: { category, available: true },
       order: [['id', 'DESC']],
-      include: [ { all: true } ]
+      include: [ { all: true, include: [ { all: true }] } ]
+    });
+  };
+
+  Goods.listById = async function list(category, userId) {
+    return this.findAll({
+      where: { category, authorId: userId, available: true },
+      order: [['id', 'DESC']],
+      include: [ { all: true, include: [ { all: true }] } ]
+    });
+  };
+
+  Goods.listByLikes = async function list(category, goodIds) {
+    return this.findAll({
+      where: { category, id: { [Sequelize.Op.in]: goodIds }, available: true },
+      order: [['id', 'DESC']],
+      include: [ { all: true, include: [ { all: true }] } ]
     });
   };
 
@@ -89,13 +98,6 @@ module.exports = (sequelize, DataTypes) => {
 
   Goods.prototype.remove = async function remove() {
     await this.destroy();
-  };
-
-  Goods.prototype.like = async function like() {
-    const d = await this.update({
-      like: this.like + 1,
-    });
-    return d;
   };
 
   return Goods;
