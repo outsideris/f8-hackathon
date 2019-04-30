@@ -22,8 +22,9 @@ module.exports = (sequelize, DataTypes) => {
     paranoid: false,
   });
 
-  Contracts.make = async function make(g) {
+  Contracts.make = async function make(g, authorId) {
     const data = Object.assign({}, {
+      authorId,
       goodId: g.id,
       status: Status.paid.name,
     });

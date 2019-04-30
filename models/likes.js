@@ -13,10 +13,14 @@ module.exports = (sequelize, DataTypes) => {
     paranoid: false,
   });
 
-  Likes.like = async function like(goodId) {
+  Likes.like = async function like(authorId, goodId) {
+    const has = this.findOne({ where: { authorId, goodId } });
+    if (!has) {
+      const d = await this.build({ authorId, goodId }).save();
+      return d;
+    }
 
-    const d = await this.build({ goodId }).save();
-    return d;
+    return has;
   };
 
   return Likes;

@@ -17,7 +17,7 @@ module.exports = {
       bio: {
         type: Sequelize.TEXT,
       },
-      email: {
+      contact: {
         type: Sequelize.STRING,
       },
       imageUrl: {

@@ -4,6 +4,7 @@ const router = express.Router();
 
 const { Goods, Contracts, Likes } = require('../models');
 const { postProcess } = require('../lib/util');
+const { verifyToken } = require('../lib/auth');
 
 const UPLOAD_PATH = 'public/upload';
 
@@ -23,9 +24,12 @@ const normalizeRequest = (req) => {
 
 router.post('/goods', async (req, res, next) => {
   try {
-    normalizeRequest(req);
+    const authorization = req.get('Authorization');
+    const decoded = await verifyToken(authorization);
 
-    // TODO: set authorId from auth
+    normalizeRequest(req);
+    req.fields.authorId = decoded.sub;
+
     const g = await Goods.register(req.fields);
     res.json(postProcess(g.toJSON()));
   } catch (err) {
@@ -54,8 +58,14 @@ router.get('/goods/:id', async (req, res, next) => {
 
 router.put('/goods/:id', async (req, res, next) => {
   try {
+    const authorization = req.get('Authorization');
+    const decoded = await verifyToken(authorization);
+
     const g = await Goods.get(req.params.id);
     if (!g) { return next(createError(404, 'The good does not exist.')); }
+    if (g.authorId !== decoded.sub) {
+      return next(createError(403, 'You are not own this good.'));
+    }
 
     normalizeRequest(req);
 
@@ -68,8 +78,14 @@ router.put('/goods/:id', async (req, res, next) => {
 
 router.delete('/goods/:id', async (req, res, next) => {
   try {
+    const authorization = req.get('Authorization');
+    const decoded = await verifyToken(authorization);
+
     const g = await Goods.get(req.params.id);
     if (!g) { return next(createError(404, 'The good does not exist.')); }
+    if (g.authorId !== decoded.sub) {
+      return next(createError(403, 'You are not own this good.'));
+    }
 
     await g.remove();
     res.json({});
@@ -80,10 +96,13 @@ router.delete('/goods/:id', async (req, res, next) => {
 
 router.post('/goods/:id/like', async (req, res, next) => {
   try {
+    const authorization = req.get('Authorization');
+    const decoded = await verifyToken(authorization);
+
     const g = await Goods.get(req.params.id);
     if (!g) { return next(createError(404, 'The good does not exist.')); }
 
-    const c = await Likes.like(g.id);
+    const c = await Likes.like(decoded.sub, g.id);
 
     res.json(postProcess(c.toJSON()));
   } catch (err) {
@@ -93,10 +112,13 @@ router.post('/goods/:id/like', async (req, res, next) => {
 
 router.post('/goods/:id/contract', async (req, res, next) => {
   try {
+    const authorization = req.get('Authorization');
+    const decoded = await verifyToken(authorization);
+
     const g = await Goods.get(req.params.id);
     if (!g) { return next(createError(404, 'The good does not exist.')); }
 
-    const c = await Contracts.make(g);
+    const c = await Contracts.make(g, decoded.sub);
 
     res.json(postProcess(c.toJSON()));
   } catch (err) {

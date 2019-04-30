@@ -9,8 +9,10 @@ module.exports = (sequelize, DataTypes) => {
     bio: {
       type: DataTypes.TEXT,
     },
-    email: {
+    contact: {
       type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
     },
     imageUrl: {
       type: DataTypes.STRING,
@@ -25,7 +27,12 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Authors.signin = async function signin(a) {
-    // TODO: prevent to save duplicated user
+    const user = await this.findOne({ where: { contact: a.contact } });
+    if (user) {
+      const d = await user.update(a);
+      return d;
+    }
+
     const d = await this.build(a).save();
     return d;
   };
