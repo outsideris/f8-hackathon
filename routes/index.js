@@ -4,15 +4,7 @@ const pkg = require('../package.json');
 
 router.get('/', (req, res, next) => {
   try {
-    res.json({ title: 'f8hackathon', version: pkg.version });
-  } catch (err) {
-    return next(err);
-  }
-});
-
-router.get('/search', (req, res, next) => {
-  try {
-    res.json({ title: 'f8hackathon', version: pkg.version });
+    res.json({ title: 'huzag', version: pkg.version });
   } catch (err) {
     return next(err);
   }
